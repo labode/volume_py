@@ -25,24 +25,15 @@ def analyze(file):
 
 
 if __name__ == '__main__':
-
     # Get volume to analyze
-    mha_file = sys.argv[1]
-    output = sys.argv[2]
+    try:
+        mha_file = sys.argv[1]
+        output = sys.argv[2]
+    except IndexError:
+        sys.exit('Missing parameters \nPlease supply: volume file, output file name')
 
-    error = False
-    if not mha_file or not output:
-        print("Missing parameters")
-        # Explain the needed parameters to the user
-        print("Please supply: volume file, output file name")
-        error = True
-
-    if not error:
-        # Convert volume to .nrrd
-        nrrd_file = converter.convert(mha_file, 'volume')
-        analysis = analyze(nrrd_file)
-        # Write .csv with the results
-        csv_writer.write(analysis, output)
-
-    else:
-        print('No volume file supplied')
+    # Convert volume to .nrrd
+    nrrd_file = converter.convert(mha_file, 'volume')
+    analysis = analyze(nrrd_file)
+    # Write .csv with the results
+    csv_writer.write(analysis, output)
