@@ -1,8 +1,11 @@
+import os
+
 import numpy as np
 import converter
 import csv_writer
 import nrrd
 import sys
+import time
 
 
 # TODO: supply voxel size and calculate volume here?
@@ -32,8 +35,17 @@ if __name__ == '__main__':
     except IndexError:
         sys.exit('Missing parameters \nPlease supply: volume file, output file name')
 
+    # create name for .nrrd that is unique enough not to cause accidental conflicts
+    nrrd_tmpfile = 'volume_' + str(int(time.time()))
+
     # Convert volume to .nrrd
-    nrrd_file = converter.convert(mha_file, 'volume')
+    print('Converting .mha to .nrrd')
+    nrrd_file = converter.convert(mha_file, nrrd_tmpfile)
+    print('Analysing .nrrd')
     analysis = analyze(nrrd_file)
+    # Cleanup
+    print('Removing temporary file')
+    os.remove(nrrd_tmpfile)
     # Write .csv with the results
+    print('Writing analysis to .csv')
     csv_writer.write(analysis, output)
