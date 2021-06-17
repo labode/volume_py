@@ -11,9 +11,11 @@ Intended for use with https://github.com/labode/genana_py id assignment
 
 ## Input
 - .mha volume file
+- Output Filename
+- Optional: voxel size x, y, z
 
 ## Output
-- .csv containing id and number voxels
+- .csv containing id and number voxels (rounded down to two positions after decimal point, use appropriate voxel size unit)
 
 ## Usage
-`python main.py volume.mha outputfile`
+`python volume.py volume.mha outputfile 2 2 2`
