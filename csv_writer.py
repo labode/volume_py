@@ -8,3 +8,5 @@ def write(data, target_file):
 
     for i in data:
         output_file.write(str(i[0]) + '; ' + str(i[1]) + ';\n')
+
+    output_file.close()
