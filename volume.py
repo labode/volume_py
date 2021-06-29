@@ -1,5 +1,4 @@
 import os
-
 import numpy as np
 import converter
 import csv_writer
@@ -60,12 +59,12 @@ if __name__ == '__main__':
     # Convert volume to .nrrd
     print('Converting .mha to .nrrd')
     nrrd_file = converter.convert(mha_file, nrrd_tmpfile)
-    print('Temporary converted file writte to ' + nrrd_tmpfile + '.nrrd')
+    print('Temp .nrrd file written to ' + nrrd_tmpfile + '.nrrd')
     # Analyze .nrrd
     print('Analysing .nrrd')
     analysis = analyze(nrrd_file, voxel_size_x, voxel_size_y, voxel_size_z)
     # Cleanup
-    print('Removing temporary file')
+    print('Removing temp file')
     os.remove(nrrd_tmpfile + '.nrrd')
     # Write .csv with the results
     print('Writing analysis to .csv')
