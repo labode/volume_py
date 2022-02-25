@@ -1,0 +1,3 @@
+numpy==1.16.2
+pynrrd==0.4.2
+itk==5.2.0.post3
