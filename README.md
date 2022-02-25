@@ -9,6 +9,10 @@ Intended for use with https://github.com/labode/genana_py id assignment
 - counts number of occurrences (= number of voxels) per label
 - writes the measurements into .csv
 
+## Requirements
+Required packages are listed in requirements.txt and can be installed using pip as follows:\
+`pip3 install -r requirements.txt`
+
 ## Input
 - .mha volume file
 - Output Filename
@@ -18,4 +22,4 @@ Intended for use with https://github.com/labode/genana_py id assignment
 - .csv containing id and number voxels (rounded down to two positions after decimal point, use appropriate voxel size unit)
 
 ## Usage
-`python volume.py volume.mha outputfile 2 2 2`
+`python3 volume.py volume.mha outputfile 2 2 2`
