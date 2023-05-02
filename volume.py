@@ -1,3 +1,4 @@
+import itertools
 import os
 import numpy as np
 import converter
@@ -5,6 +6,7 @@ import csv_writer
 import nrrd
 import sys
 import time
+from multiprocessing.dummy import Pool as ThreadPool
 
 
 def analyze(file, size_x, size_y, size_z):
@@ -15,22 +17,25 @@ def analyze(file, size_x, size_y, size_z):
     number_entries = len(entries)
     print(str(number_entries) + ' labels found (excluding background label)')
 
-    volumes = calculate_volume(entries, data, size_x, size_y, size_z)
+    entries = np.delete(entries, np.where(entries == 0))
+
+    # https://stackoverflow.com/questions/2846653/how-can-i-use-threading-in-python
+    pool = ThreadPool(4)
+    volumes = pool.starmap(calculate_volume, zip(entries, itertools.repeat(data), itertools.repeat(size_x),
+                                                 itertools.repeat(size_y), itertools.repeat(size_z)))
+
+    pool.close()
+    pool.join()
 
     return volumes
 
 
-def calculate_volume(labels, data, size_x, size_y, size_z):
-    volumes = []
-    for label in labels:
-        if label == 0:
-            continue
+def calculate_volume(label, data, size_x, size_y, size_z):
+    occurrences = np.count_nonzero(data == label)
+    volume = round(occurrences * (size_x * size_y * size_z), 2)
+    print([label, volume])
 
-        occurrences = np.count_nonzero(data == label)
-        volume = round(occurrences * (size_x * size_y * size_z), 2)
-        volumes.append([label, volume])
-
-    return volumes
+    return [label, volume]
 
 
 if __name__ == '__main__':
