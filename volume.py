@@ -15,7 +15,7 @@ def analyze(file, size_x, size_y, size_z):
     entries = np.unique(data)
 
     number_entries = len(entries)
-    print(str(number_entries) + ' labels found (excluding background label)')
+    print(str(number_entries - 1) + ' labels found (excluding background label)')
 
     entries = np.delete(entries, np.where(entries == 0))
 
