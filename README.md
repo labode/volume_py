@@ -7,7 +7,7 @@ Intended for use with https://github.com/labode/genana_py id assignment
 - reads .nrrd into numpy array
 - counts distinct labels in array
 - counts number of occurrences (= number of voxels) per label
-- writes the measurements into .csv
+- writes the measurements into a .csv
 
 ## Requirements
 Required packages are listed in requirements.txt and can be installed using pip as follows:\
@@ -15,11 +15,12 @@ Required packages are listed in requirements.txt and can be installed using pip 
 
 ## Input
 - .mha volume file
-- Output Filename
-- Optional: voxel size x, y, z
+- Optional: Output filename
+- Optional: Voxel size x, y, z
+- Optional: Number of threads to use
 
 ## Output
-- .csv containing id and number voxels (rounded down to two positions after decimal point, use appropriate voxel size unit)
+- .csv containing id and number/size voxels (rounded down to two positions after decimal point, use appropriate voxel size unit)
 
 ## Usage
-`python3 volume.py volume.mha outputfile 2 2 2`
+`python3 volume.py volume.mha -o outputfile.csv -x 2 -y 2 -z 2 -t 32`
