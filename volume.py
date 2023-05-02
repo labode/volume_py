@@ -9,7 +9,7 @@ import time
 from multiprocessing.dummy import Pool as ThreadPool
 
 
-def analyze(file, size_x, size_y, size_z):
+def analyze(file, size_x, size_y, size_z, threads):
     # Read .nrrd
     data, header = nrrd.read(file)
     entries = np.unique(data)
@@ -20,7 +20,7 @@ def analyze(file, size_x, size_y, size_z):
     entries = np.delete(entries, np.where(entries == 0))
 
     # https://stackoverflow.com/questions/2846653/how-can-i-use-threading-in-python
-    pool = ThreadPool(4)
+    pool = ThreadPool(threads)
     volumes = pool.starmap(calculate_volume, zip(entries, itertools.repeat(data), itertools.repeat(size_x),
                                                  itertools.repeat(size_y), itertools.repeat(size_z)))
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # Analyze .nrrd
     print('Analysing .nrrd')
-    analysis = analyze(nrrd_file, voxel_size_x, voxel_size_y, voxel_size_z)
+    analysis = analyze(nrrd_file, voxel_size_x, voxel_size_y, voxel_size_z, 16)
 
     # Cleanup
     print('Removing temp file')
