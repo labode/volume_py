@@ -1,7 +1,6 @@
-def write(data, target_file):
+def write(data, target_file='analysis.csv'):
     # Initiate File
-    filename = str(target_file) + ".csv"
-    output_file = open(filename, "w")
+    output_file = open(target_file, "w")
 
     # Write header
     output_file.write("Id; Volume\n")
