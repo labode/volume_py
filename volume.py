@@ -5,12 +5,11 @@ import numpy as np
 import converter
 import csv_writer
 import nrrd
-import sys
 import time
 from multiprocessing.dummy import Pool as ThreadPool
 
 
-def analyze(file, size_x, size_y, size_z, threads):
+def analyze(file, size_x, size_y, size_z, number_threads):
     # Read .nrrd
     data, header = nrrd.read(file)
     entries = np.unique(data)
@@ -21,7 +20,7 @@ def analyze(file, size_x, size_y, size_z, threads):
     entries = np.delete(entries, np.where(entries == 0))
 
     # https://stackoverflow.com/questions/2846653/how-can-i-use-threading-in-python
-    pool = ThreadPool(threads)
+    pool = ThreadPool(number_threads)
     volumes = pool.starmap(calculate_volume, zip(entries, itertools.repeat(data), itertools.repeat(size_x),
                                                  itertools.repeat(size_y), itertools.repeat(size_z)))
 
@@ -84,7 +83,7 @@ if __name__ == '__main__':
 
     # Analyze .nrrd
     print('Analysing .nrrd')
-    analysis = analyze(nrrd_file, voxel_size_x, voxel_size_y, voxel_size_z, 16)
+    analysis = analyze(nrrd_file, voxel_size_x, voxel_size_y, voxel_size_z, threads)
 
     # Cleanup
     print('Removing temp file')
