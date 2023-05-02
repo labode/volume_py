@@ -15,23 +15,22 @@ def analyze(file, size_x, size_y, size_z):
     number_entries = len(entries)
     print(str(number_entries) + ' labels found (excluding background label)')
 
-    count = []
+    volumes = calculate_volume(entries, data, size_x, size_y, size_z)
 
-    i = 0
-    # For each label => Count number of pixels
-    for entry in entries:
-        print(str(round(i/(number_entries/100), 2)) + '% analysed')
-        # We do not need the zeroes (= background label)
-        if entry == 0:
+    return volumes
+
+
+def calculate_volume(labels, data, size_x, size_y, size_z):
+    volumes = []
+    for label in labels:
+        if label == 0:
             continue
 
-        occurrences = np.count_nonzero(data == entry)
+        occurrences = np.count_nonzero(data == label)
         volume = round(occurrences * (size_x * size_y * size_z), 2)
-        count.append([entry, volume])
+        volumes.append([label, volume])
 
-        i += 1
-
-    return count
+    return volumes
 
 
 if __name__ == '__main__':
@@ -43,8 +42,8 @@ if __name__ == '__main__':
         sys.exit('Missing parameters \nPlease supply: volume file, output file name')
 
     # If the user supplies the voxel size, we use it to calculate the volume.
-    # Otherwise we use 1
-    # We accommodate non symmetrical voxel sizes
+    # Otherwise, we use 1
+    # We accommodate non-symmetrical voxel sizes
     try:
         voxel_size_x = float(sys.argv[3])
         voxel_size_y = float(sys.argv[4])
@@ -60,12 +59,15 @@ if __name__ == '__main__':
     print('Converting .mha to .nrrd')
     nrrd_file = converter.convert(mha_file, nrrd_tmpfile)
     print('Temp .nrrd file written to ' + nrrd_tmpfile + '.nrrd')
+
     # Analyze .nrrd
     print('Analysing .nrrd')
     analysis = analyze(nrrd_file, voxel_size_x, voxel_size_y, voxel_size_z)
+
     # Cleanup
     print('Removing temp file')
     os.remove(nrrd_tmpfile + '.nrrd')
+
     # Write .csv with the results
     print('Writing analysis to .csv')
     csv_writer.write(analysis, output)
