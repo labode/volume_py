@@ -34,7 +34,6 @@ def analyze(file, size_x, size_y, size_z, threads):
 def calculate_volume(label, data, size_x, size_y, size_z):
     occurrences = np.count_nonzero(data == label)
     volume = round(occurrences * (size_x * size_y * size_z), 2)
-    print([label, volume])
 
     return [label, volume]
 
