@@ -1,4 +1,4 @@
-def write(data, target_file='analysis.csv'):
+def write(data, target_file):
     # Initiate File
     output_file = open(target_file, "w")
 
