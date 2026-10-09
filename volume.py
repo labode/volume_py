@@ -3,7 +3,7 @@ import argparse
 import os
 import numpy as np
 import converter
-import csv_writer
+import csv
 import nrrd
 import time
 from multiprocessing.dummy import Pool as ThreadPool
@@ -35,6 +35,14 @@ def calculate_volume(label, data, size_x, size_y, size_z):
     volume = round(occurrences * (size_x * size_y * size_z), 2)
 
     return [label, volume]
+
+
+def write_csv(file_name, data, delimiter, data_title):
+    with open(file_name, 'w') as file:
+        writer = csv.writer(file, delimiter=delimiter)
+        writer.writerow(['Id', data_title])
+        for line in data:
+            writer.writerow(line)
 
 
 if __name__ == '__main__':
@@ -78,4 +86,4 @@ if __name__ == '__main__':
 
     # Write .csv with the results
     print('Writing analysis to .csv')
-    csv_writer.write(analysis, output_file)
+    write_csv(output_file, analysis, ';', 'Volume')
